@@ -19,7 +19,7 @@ void FillArrayElement(double[,] array, int index, double valueX,double valueY)
 //-----------------------------------------PrintArray----------------------------------------------------------------+
 void PrintArray(double[,] array)
 {
-    int length = array.Length/2;
+    int length = array.GetLength(0);
     for (int i = 0; i < length; i++)
     {
        Console.Write($"({array[i,0]};{array[i,1]}) " );
@@ -28,7 +28,7 @@ void PrintArray(double[,] array)
 //-------------------------------------------------------------------------------------------------------------------+
 
 double[,] coordinates     = new double[4,2];
-int       firstAreaLength = coordinates.Length/2;
+int       rowsLength = coordinates.GetLength(0);
 
 // Расположим точки в разных координатных плоскостях
 FillArrayElement(coordinates,0,10,10);
@@ -44,7 +44,7 @@ Console.Write("Координаты до масштабирования равн
 PrintArray(coordinates);
 
 // Масштабируем
-for (int i = 0; i < firstAreaLength; i++)
+for (int i = 0; i < rowsLength; i++)
 {
     coordinates[i,0] *= coef;
     coordinates[i,1] *= coef;
