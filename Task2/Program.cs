@@ -10,11 +10,16 @@
 // Сделаем масштабирование фигуры с четырьмя точками, как в примере. 
 
 //-------------------------------------Заполняет элемент массива координатами-----------------------------------------+
-void FillArrayElement(double[,] array, int index, double valueX,double valueY)
+void FillArrayElements(double[,] array, double valueX,double valueY)
 {
-    Random rnd = new Random();
-    array[index,0] = Math.Round(rnd.NextDouble()*valueX,2);
-    array[index,1] = Math.Round(rnd.NextDouble()*valueY,2);
+    int    rowsLength  = array.GetLength(0);
+    Random rnd         = new Random();
+    for (int i = 0; i < rowsLength; i++)
+    {
+        array[i,0] = Math.Round(rnd.NextDouble()*valueX,2);
+        array[i,1] = Math.Round(rnd.NextDouble()*valueY,2);
+    }
+    
 }
 //-----------------------------------------PrintArray----------------------------------------------------------------+
 void PrintArray(double[,] array)
@@ -25,30 +30,34 @@ void PrintArray(double[,] array)
        Console.Write($"({array[i,0]};{array[i,1]}) " );
     }
 }
+//----------------------------------------Масштабируем---------------------------------------------------------------+
+void Scaling(double[,] array,double coef)
+{
+    int length = array.GetLength(0);
+    for (int i = 0; i < length; i++)
+    {
+       array[i,0] = Math.Round(array[i,0] * coef,2);
+       array[i,1] = Math.Round(array[i,1] * coef,2);
+    }
+}
 //-------------------------------------------------------------------------------------------------------------------+
 
-double[,] coordinates     = new double[4,2];
-int       rowsLength = coordinates.GetLength(0);
-
-// Расположим точки в разных координатных плоскостях
-FillArrayElement(coordinates,0,10,10);
-FillArrayElement(coordinates,1,10,-10);
-FillArrayElement(coordinates,2,-10,-10);
-FillArrayElement(coordinates,3,-10,10);
-
 Console.Clear();
+Console.Write("Введите количество вершин: ");
+int vertexes = int.Parse(Console.ReadLine()?? "");
+
+double[,] coordinates = new double[vertexes,2];
+int       rowsLength  = coordinates.GetLength(0);
+
+FillArrayElements(coordinates,-10,10);// Зададим координаты вершин
+
 Console.Write("\n" + "Введите коэффициент масштабирования: ");
 double coef = double.Parse(Console.ReadLine()?? "");
 
 Console.Write("Координаты до масштабирования равны: ");
 PrintArray(coordinates);
 
-// Масштабируем
-for (int i = 0; i < rowsLength; i++)
-{
-    coordinates[i,0] *= coef;
-    coordinates[i,1] *= coef;
-}
+Scaling(coordinates,coef);           // Масштабируем
 
 Console.Write("\n" + "Координаты после масштабирования равны: ");
 PrintArray(coordinates);
