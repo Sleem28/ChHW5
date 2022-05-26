@@ -14,10 +14,15 @@ void FillArrayElements(double[,] array, double valueX,double valueY)
 {
     int    rowsLength  = array.GetLength(0);
     Random rnd         = new Random();
+    int    sign        = 0;
     for (int i = 0; i < rowsLength; i++)
     {
-        array[i,0] = Math.Round(rnd.NextDouble()*valueX,2);
-        array[i,1] = Math.Round(rnd.NextDouble()*valueY,2);
+        sign = rnd.Next(0,2);
+        if(sign == 0) valueX = -valueX;
+        array[i,0] = Math.Round(rnd.NextDouble() * valueX,2);
+        sign = rnd.Next(0,2);
+        if(sign == 0) valueY = -valueY;
+        array[i,1] = Math.Round(rnd.NextDouble() * valueY,2);
     }
     
 }
