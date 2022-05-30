@@ -7,62 +7,53 @@
 при k = 2 получаем "(0,0) (4,0) (4,4) (0,4)"
 */
 
-// Сделаем масштабирование фигуры с четырьмя точками, как в примере. 
+//-------------------------------------------------------------------------------------------------------------------+
+int[,] FillPoints(string[] arrPoints)
+{
+    int[,] points = new int[arrPoints.Length,2];
 
-//-------------------------------------Заполняет элемент массива координатами-----------------------------------------+
-void FillArrayElements(double[,] array, double valueX,double valueY)
-{
-    int    rowsLength  = array.GetLength(0);
-    Random rnd         = new Random();
-    int    sign        = 0;
-    for (int i = 0; i < rowsLength; i++)
+    for (int i = 0; i < arrPoints.Length; i++)
     {
-        sign = rnd.Next(0,2);
-        if(sign == 0) valueX = -valueX;
-        array[i,0] = Math.Round(rnd.NextDouble() * valueX,2);
-        sign = rnd.Next(0,2);
-        if(sign == 0) valueY = -valueY;
-        array[i,1] = Math.Round(rnd.NextDouble() * valueY,2);
+        string substring = arrPoints[i].Substring(1,arrPoints[i].Length-2);
+        string[] arrSubstrings = substring.Split(",");
+        points[i,0] = int.Parse(arrSubstrings[0]);
+        points[i,1] = int.Parse(arrSubstrings[1]);
+        
     }
-    
+
+    return(points);
 }
-//-----------------------------------------PrintArray----------------------------------------------------------------+
-void PrintArray(double[,] array)
+//-------------------------------------------------------------------------------------------------------------------+
+void MultipleCoordinates(int[,] points, int coef)
 {
-    int length = array.GetLength(0);
-    for (int i = 0; i < length; i++)
+    for (int i = 0; i < points.GetLength(0); i++)
     {
-       Console.Write($"({array[i,0]};{array[i,1]}) " );
-    }
-}
-//----------------------------------------Масштабируем---------------------------------------------------------------+
-void Scaling(double[,] array,double coef)
-{
-    int length = array.GetLength(0);
-    for (int i = 0; i < length; i++)
-    {
-       array[i,0] = Math.Round(array[i,0] * coef,2);
-       array[i,1] = Math.Round(array[i,1] * coef,2);
+        points[i,0] *= coef;
+        points[i,1] *= coef;
     }
 }
 //-------------------------------------------------------------------------------------------------------------------+
-
+void PrintResult(int[,] points)
+{
+    for (int i = 0; i < points.GetLength(0); i++)
+    {
+        Console.Write($"({points[i,0]},{points[i,1]}) ");
+    }
+    Console.WriteLine();
+}
+//-------------------------------------------------------------------------------------------------------------------+
 Console.Clear();
-Console.Write("Введите количество вершин: ");
-int vertexes = int.Parse(Console.ReadLine()?? "");
+Console.Write("Введите координаты: ");
+string   sCoordinates   = Console.ReadLine()?? "";
+Console.Write("Введите коэффициент масштабирования: ");
+int coef = int.Parse(Console.ReadLine()?? "");
 
-double[,] coordinates = new double[vertexes,2];
-int       rowsLength  = coordinates.GetLength(0);
+string[] arrCoordinates = sCoordinates.Split(" ");
+int[,]   points         = FillPoints(arrCoordinates);
+MultipleCoordinates(points,coef);
+Console.Write("Координаты после масштабирования равны: ");
+PrintResult(points);
 
-FillArrayElements(coordinates,-10,10);// Зададим координаты вершин
 
-Console.Write("\n" + "Введите коэффициент масштабирования: ");
-double coef = double.Parse(Console.ReadLine()?? "");
 
-Console.Write("Координаты до масштабирования равны: ");
-PrintArray(coordinates);
 
-Scaling(coordinates,coef);           // Масштабируем
-
-Console.Write("\n" + "Координаты после масштабирования равны: ");
-PrintArray(coordinates);
